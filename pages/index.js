@@ -107,6 +107,9 @@ const SectionContent = styled.div`
 
 const SectionChartsContainer = styled.div`
   width: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const ChartWrapper = styled.div`
@@ -118,6 +121,7 @@ const Home = () => {
   const [inputValues, setInputValues] = useState({});
   const [scores, setScores] = useState({});
   const [sectionScores, setSectionScores] = useState({});
+  const [maxScores, setMaxScores] = useState({});
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -131,12 +135,15 @@ const Home = () => {
   const calculateScores = (updatedValues) => {
     const newScores = {};
     const newSectionScores = {};
+    const newMaxScores = {};
     sections.forEach((section) => {
       let total = 0;
+      let maxTotal = 0;
       newSectionScores[section.name] = section.fields.map((field) => {
         const score = parseInt(updatedValues[`${section.name}-${field}`]) || 0;
         const weight = parseInt(updatedValues[`${section.name}-${field}-weight`]) || 0;
         total += score + weight;
+        maxTotal += 4; // Assuming max score per field is 4
         return {
           name: field,
           score: score,
@@ -144,80 +151,11 @@ const Home = () => {
         };
       });
       newScores[section.name] = total;
+      newMaxScores[section.name] = maxTotal;
     });
     setScores(newScores);
     setSectionScores(newSectionScores);
-  };
-
-  const totalScores = {
-    labels: Object.keys(scores),
-    datasets: [
-      {
-        label: 'Score',
-        data: Object.values(scores),
-        backgroundColor: 'rgba(255, 133, 27, 0.6)',
-        borderColor: '#ff851b',
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const radarData = {
-    labels: Object.keys(scores),
-    datasets: [
-      {
-        label: 'Score',
-        data: Object.values(scores),
-        backgroundColor: 'rgba(255, 133, 27, 0.6)',
-        borderColor: '#ff851b',
-        borderWidth: 2, // Increased thickness
-        pointBackgroundColor: '#ff851b',
-      },
-    ],
-  };
-
-  const options = {
-    plugins: {
-      legend: {
-        labels: {
-          color: '#fff',
-        },
-      },
-    },
-    scales: {
-      r: {
-        angleLines: {
-          color: '#888', // Changed to gray
-        },
-        grid: {
-          color: '#888', // Changed to gray
-        },
-        pointLabels: {
-          color: '#fff',
-        },
-        ticks: {
-          backdropColor: 'rgba(0,0,0,0)',
-          display: false, // Removed numbers
-        },
-        shape: 'circle', // Make radar chart circular
-      },
-      x: {
-        ticks: {
-          color: '#fff',
-        },
-        grid: {
-          color: '#888', // Changed to gray
-        },
-      },
-      y: {
-        ticks: {
-          color: '#fff',
-        },
-        grid: {
-          color: '#888', // Changed to gray
-        },
-      },
-    },
+    setMaxScores(newMaxScores);
   };
 
   return (
@@ -241,7 +179,7 @@ const Home = () => {
       ))}
       <ChartWrapper>
         <h2>Punteggi Totali</h2>
-        <ScoreChart scores={scores} />
+        <ScoreChart scores={scores} maxScores={maxScores} />
       </ChartWrapper>
     </Container>
   );

@@ -24,7 +24,7 @@ const ChartWrapper = styled.div`
 
 const RadarChartContainer = styled.div`
   width: 100%;
-  height: 500px; /* Increased height */
+  height: 500px;
   margin-top: 1rem;
 `;
 
@@ -59,6 +59,7 @@ const SectionCharts = ({ sectionScores }) => {
 
   const labels = sectionScores.map(score => score.name);
   const scores = sectionScores.map(score => score.score);
+  const weights = sectionScores.map(score => score.weight);
 
   const barData = {
     labels,
@@ -70,6 +71,13 @@ const SectionCharts = ({ sectionScores }) => {
         borderColor: '#ff851b',
         borderWidth: 1,
       },
+      {
+        label: 'Weight',
+        data: weights,
+        backgroundColor: 'rgba(0, 133, 255, 0.6)',
+        borderColor: '#0085ff',
+        borderWidth: 1,
+      },
     ],
   };
 
@@ -78,7 +86,7 @@ const SectionCharts = ({ sectionScores }) => {
     datasets: [
       {
         label: 'Score',
-        data: scores,
+        data: scores.map(value => Number(value) || 0),
         backgroundColor: 'rgba(255, 133, 27, 0.6)',
         borderColor: '#ff851b',
         borderWidth: 2, // Increased thickness
@@ -97,6 +105,8 @@ const SectionCharts = ({ sectionScores }) => {
     },
     scales: {
       r: {
+        min: 0,
+        max: 4, // Fixed range from 0 to 4
         angleLines: {
           color: '#888', // Changed to gray
         },
@@ -131,7 +141,7 @@ const SectionCharts = ({ sectionScores }) => {
     },
   };
 
-  const averageScore = scores.reduce((acc, score) => acc + score, 0) / scores.length;
+  const averageScore = scores.reduce((acc, score) => acc + (Number(score) || 0), 0) / scores.length;
   const gaugeValue = averageScore * 25; // Assuming max score is 4 and scale is 0-100
 
   return (

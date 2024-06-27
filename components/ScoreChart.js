@@ -57,13 +57,13 @@ const ChartsWrapper = styled.div`
   width: 100%;
 `;
 
-const ScoreChart = ({ scores }) => {
+const ScoreChart = ({ scores, maxScores }) => {
   const data = {
     labels: Object.keys(scores),
     datasets: [
       {
         label: 'Score',
-        data: Object.values(scores),
+        data: Object.values(scores).map(value => Number(value) || 0),
         backgroundColor: 'rgba(255, 133, 27, 0.6)',
         borderColor: '#ff851b',
         borderWidth: 1,
@@ -76,7 +76,7 @@ const ScoreChart = ({ scores }) => {
     datasets: [
       {
         label: 'Score',
-        data: Object.values(scores),
+        data: Object.keys(scores).map(key => (Number(scores[key]) / maxScores[key]) * 4),
         backgroundColor: 'rgba(255, 133, 27, 0.6)',
         borderColor: '#ff851b',
         borderWidth: 2,
@@ -95,6 +95,8 @@ const ScoreChart = ({ scores }) => {
     },
     scales: {
       r: {
+        min: 0,
+        max: 4, // Fixed range from 0 to 4
         angleLines: {
           color: '#888',
         },
@@ -106,7 +108,7 @@ const ScoreChart = ({ scores }) => {
         },
         ticks: {
           backdropColor: 'rgba(0,0,0,0)',
-          display: false, // Removed numbers
+          display: false,
         },
         shape: 'circle',
       },
@@ -129,8 +131,8 @@ const ScoreChart = ({ scores }) => {
     },
   };
 
-  const totalScore = Object.values(scores).reduce((acc, score) => acc + score, 0);
-  const maxPossibleScore = Object.keys(scores).length * 4; // Assuming max score per section is 4
+  const totalScore = Object.values(scores).reduce((acc, score) => acc + (Number(score) || 0), 0);
+  const maxPossibleScore = Object.values(maxScores).reduce((acc, score) => acc + score, 0); 
   const gaugeValue = (totalScore / maxPossibleScore) * 100;
 
   return (
