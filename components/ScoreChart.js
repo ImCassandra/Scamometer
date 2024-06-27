@@ -57,15 +57,22 @@ const ChartsWrapper = styled.div`
   width: 100%;
 `;
 
-const ScoreChart = ({ scores, maxScores }) => {
+const ScoreChart = ({ scores, weightedScores, maxScores }) => {
   const data = {
     labels: Object.keys(scores),
     datasets: [
       {
-        label: 'Score',
+        label: 'Punteggio Semplice',
         data: Object.values(scores).map(value => Number(value) || 0),
         backgroundColor: 'rgba(255, 133, 27, 0.6)',
         borderColor: '#ff851b',
+        borderWidth: 1,
+      },
+      {
+        label: 'Punteggio Ponderato',
+        data: Object.values(weightedScores).map(value => Number(value) || 0),
+        backgroundColor: 'rgba(0, 133, 255, 0.6)',
+        borderColor: '#0085ff',
         borderWidth: 1,
       },
     ],
@@ -75,12 +82,20 @@ const ScoreChart = ({ scores, maxScores }) => {
     labels: Object.keys(scores),
     datasets: [
       {
-        label: 'Score',
-        data: Object.keys(scores).map(key => (Number(scores[key]) / maxScores[key]) * 4),
+        label: 'Punteggio Semplice',
+        data: Object.keys(scores).map(key => (Number(scores[key]) / maxScores[key]) * 5),
         backgroundColor: 'rgba(255, 133, 27, 0.6)',
         borderColor: '#ff851b',
         borderWidth: 2,
         pointBackgroundColor: '#ff851b',
+      },
+      {
+        label: 'Punteggio Ponderato',
+        data: Object.keys(weightedScores).map(key => (Number(weightedScores[key]) / maxScores[key]) * 5),
+        backgroundColor: 'rgba(0, 133, 255, 0.6)',
+        borderColor: '#0085ff',
+        borderWidth: 2,
+        pointBackgroundColor: '#0085ff',
       },
     ],
   };
@@ -96,7 +111,7 @@ const ScoreChart = ({ scores, maxScores }) => {
     scales: {
       r: {
         min: 0,
-        max: 4, // Fixed range from 0 to 4
+        max: 5, // Fixed range from 0 to 5
         angleLines: {
           color: '#888',
         },
@@ -131,7 +146,7 @@ const ScoreChart = ({ scores, maxScores }) => {
     },
   };
 
-  const totalScore = Object.values(scores).reduce((acc, score) => acc + (Number(score) || 0), 0);
+  const totalScore = Object.values(weightedScores).reduce((acc, score) => acc + (Number(score) || 0), 0);
   const maxPossibleScore = Object.values(maxScores).reduce((acc, score) => acc + score, 0); 
   const gaugeValue = (totalScore / maxPossibleScore) * 100;
 

@@ -122,7 +122,7 @@ const InputSection = ({ section, handleInputChange }) => {
                 />
               </TableCell>
               <TableCell>
-                <Select name={`${section.name}-${field}-weight`} onChange={handleInputChange}>
+                <Select name={`${section.name}-${field}-weight`} onChange={handleInputChange} defaultValue="0">
                   <option value="1">+1</option>
                   <option value="0">0</option>
                   <option value="-1">-1</option>

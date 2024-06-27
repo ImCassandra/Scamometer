@@ -59,21 +59,21 @@ const SectionCharts = ({ sectionScores }) => {
 
   const labels = sectionScores.map(score => score.name);
   const scores = sectionScores.map(score => score.score);
-  const weights = sectionScores.map(score => score.weight);
+  const weightedScores = sectionScores.map(score => score.score + score.weight);
 
   const barData = {
     labels,
     datasets: [
       {
-        label: 'Score',
+        label: 'Punteggio Semplice',
         data: scores,
         backgroundColor: 'rgba(255, 133, 27, 0.6)',
         borderColor: '#ff851b',
         borderWidth: 1,
       },
       {
-        label: 'Weight',
-        data: weights,
+        label: 'Punteggio Ponderato',
+        data: weightedScores,
         backgroundColor: 'rgba(0, 133, 255, 0.6)',
         borderColor: '#0085ff',
         borderWidth: 1,
@@ -85,12 +85,20 @@ const SectionCharts = ({ sectionScores }) => {
     labels,
     datasets: [
       {
-        label: 'Score',
-        data: scores.map(value => Number(value) || 0),
+        label: 'Punteggio Semplice',
+        data: scores,
         backgroundColor: 'rgba(255, 133, 27, 0.6)',
         borderColor: '#ff851b',
-        borderWidth: 2, // Increased thickness
+        borderWidth: 2,
         pointBackgroundColor: '#ff851b',
+      },
+      {
+        label: 'Punteggio Ponderato',
+        data: weightedScores,
+        backgroundColor: 'rgba(0, 133, 255, 0.6)',
+        borderColor: '#0085ff',
+        borderWidth: 2,
+        pointBackgroundColor: '#0085ff',
       },
     ],
   };
@@ -106,28 +114,28 @@ const SectionCharts = ({ sectionScores }) => {
     scales: {
       r: {
         min: 0,
-        max: 4, // Fixed range from 0 to 4
+        max: 5, // Fixed range from 0 to 5
         angleLines: {
-          color: '#888', // Changed to gray
+          color: '#888',
         },
         grid: {
-          color: '#888', // Changed to gray
+          color: '#888',
         },
         pointLabels: {
           color: '#fff',
         },
         ticks: {
           backdropColor: 'rgba(0,0,0,0)',
-          display: false, // Removed numbers
+          display: false,
         },
-        shape: 'circle', // Make radar chart circular
+        shape: 'circle',
       },
       x: {
         ticks: {
           color: '#fff',
         },
         grid: {
-          color: '#888', // Changed to gray
+          color: '#888',
         },
       },
       y: {
@@ -135,14 +143,14 @@ const SectionCharts = ({ sectionScores }) => {
           color: '#fff',
         },
         grid: {
-          color: '#888', // Changed to gray
+          color: '#888',
         },
       },
     },
   };
 
-  const averageScore = scores.reduce((acc, score) => acc + (Number(score) || 0), 0) / scores.length;
-  const gaugeValue = averageScore * 25; // Assuming max score is 4 and scale is 0-100
+  const averageWeightedScore = weightedScores.reduce((acc, score) => acc + score, 0) / weightedScores.length;
+  const gaugeValue = (averageWeightedScore / 5) * 100; // Adjusted for a max score of 5
 
   return (
     <ChartWrapper>

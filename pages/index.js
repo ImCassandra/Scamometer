@@ -120,6 +120,7 @@ const ChartWrapper = styled.div`
 const Home = () => {
   const [inputValues, setInputValues] = useState({});
   const [scores, setScores] = useState({});
+  const [weightedScores, setWeightedScores] = useState({});
   const [sectionScores, setSectionScores] = useState({});
   const [maxScores, setMaxScores] = useState({});
 
@@ -134,15 +135,18 @@ const Home = () => {
 
   const calculateScores = (updatedValues) => {
     const newScores = {};
+    const newWeightedScores = {};
     const newSectionScores = {};
     const newMaxScores = {};
     sections.forEach((section) => {
       let total = 0;
+      let weightedTotal = 0;
       let maxTotal = 0;
       newSectionScores[section.name] = section.fields.map((field) => {
         const score = parseInt(updatedValues[`${section.name}-${field}`]) || 0;
         const weight = parseInt(updatedValues[`${section.name}-${field}-weight`]) || 0;
-        total += score + weight;
+        total += score;
+        weightedTotal += score + weight;
         maxTotal += 4; // Assuming max score per field is 4
         return {
           name: field,
@@ -151,9 +155,11 @@ const Home = () => {
         };
       });
       newScores[section.name] = total;
-      newMaxScores[section.name] = maxTotal;
+      newWeightedScores[section.name] = weightedTotal;
+      newMaxScores[section.name] = section.fields.length * 5; // Max score per field is 5 for radar charts
     });
     setScores(newScores);
+    setWeightedScores(newWeightedScores);
     setSectionScores(newSectionScores);
     setMaxScores(newMaxScores);
   };
@@ -179,7 +185,7 @@ const Home = () => {
       ))}
       <ChartWrapper>
         <h2>Punteggi Totali</h2>
-        <ScoreChart scores={scores} maxScores={maxScores} />
+        <ScoreChart scores={scores} weightedScores={weightedScores} maxScores={maxScores} />
       </ChartWrapper>
     </Container>
   );
