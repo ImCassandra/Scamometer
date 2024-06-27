@@ -14,8 +14,8 @@ Scamometer è una web app sviluppata con Next.js che aiuta a valutare la bontà 
 1. Clona il repository:
 
     ```bash
-    git clone https://github.com/tuo-username/scamometer.git
-    cd scamometer
+    git clone git@github.com:Decripto-org/Scamometer.git
+    cd Scamometer
     ```
 
 2. Installa le dipendenze:
@@ -68,7 +68,3 @@ I contributi sono benvenuti! Se hai suggerimenti o migliorie, apri un issue o in
 3. Committa le modifiche (`git commit -m 'Aggiungi nome-feature'`).
 4. Pusha sul branch (`git push origin feature/nome-feature`).
 5. Apri una pull request.
-
-## Licenza
-
-Questo progetto è sotto licenza MIT. Vedi il file [LICENSE](LICENSE) per maggiori dettagli.
