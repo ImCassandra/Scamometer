@@ -50,7 +50,7 @@ const TooltipIcon = styled.span`
   margin-left: 0.5rem;
   cursor: pointer;
   position: relative;
-
+  
   &::before {
     content: '?';
     display: inline-block;
@@ -63,7 +63,7 @@ const TooltipIcon = styled.span`
     line-height: 16px;
     font-size: 12px;
   }
-
+  
   &:hover::after {
     content: attr(data-tooltip);
     position: absolute;
@@ -73,9 +73,8 @@ const TooltipIcon = styled.span`
     color: #001f3f;
     padding: 5px;
     border-radius: 4px;
-    white-space: pre-line; /* Permette il wrapping del testo su \n */
+    white-space: pre; /* Permette il wrapping del testo su \n */
     z-index: 10;
-    max-width: 300px; /* Limita la larghezza del tooltip */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     line-height: 1.4; /* Migliora la leggibilità del testo */
   }
