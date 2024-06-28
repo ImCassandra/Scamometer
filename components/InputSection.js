@@ -100,8 +100,8 @@ const InputSection = ({ section, handleInputChange }) => {
       <Table>
         <thead>
           <tr>
-            <TableHeader>Campo</TableHeader>
-            <TableHeader>Punteggio Semplice (1-4)</TableHeader>
+            <TableHeader>Criteri di valutazione</TableHeader>
+            <TableHeader>Punteggio semplice (1-4)</TableHeader>
             <TableHeader>Ponderazione (-1/0/+1)</TableHeader>
             <TableHeader>Commenti</TableHeader>
           </tr>
