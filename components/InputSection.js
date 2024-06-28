@@ -67,7 +67,7 @@ const TooltipIcon = styled.span`
   &:hover::after {
     content: attr(data-tooltip);
     position: absolute;
-    top: -5px;
+    top: -25px;
     left: 20px;
     background-color: #ff851b;
     color: #001f3f;
@@ -137,8 +137,8 @@ const InputSection = ({ section, handleInputChange }) => {
         <thead>
           <tr>
             <TableHeader>Criteri di valutazione</TableHeader>
-            <TableHeader>Punteggio semplice (1-4)</TableHeader>
-            <TableHeader>Ponderazione (-1/0/+1)</TableHeader>
+            <TableHeader>Punteggio semplice</TableHeader>
+            <TableHeader>Ponderazione</TableHeader>
             <TableHeader>Commenti</TableHeader>
           </tr>
         </thead>
