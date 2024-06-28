@@ -14,7 +14,7 @@ Scamometer è una web app sviluppata con Next.js che aiuta a valutare la bontà 
 1. Clona il repository:
 
     ```bash
-    git clone git@github.com:Decripto-org/Scamometer.git
+    git clone https://github.com/Decripto-org/Scamometer.git
     cd Scamometer
     ```
 
