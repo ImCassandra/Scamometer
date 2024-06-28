@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import descriptions from '../data/descriptions.json'; // Assicurati che il percorso sia corretto
 
 const SectionContainer = styled.div`
   margin-bottom: 2rem;
@@ -38,10 +39,46 @@ const TableCell = styled.td`
 `;
 
 const Label = styled.label`
-  display: block;
+  display: flex;
+  align-items: center;
   color: #ff851b;
   margin-bottom: 0.5rem;
   text-align: left;
+`;
+
+const TooltipIcon = styled.span`
+  margin-left: 0.5rem;
+  cursor: pointer;
+  position: relative;
+
+  &::before {
+    content: '?';
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #ff851b;
+    color: #001f3f;
+    text-align: center;
+    line-height: 16px;
+    font-size: 12px;
+  }
+
+  &:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: -5px;
+    left: 20px;
+    background-color: #ff851b;
+    color: #001f3f;
+    padding: 5px;
+    border-radius: 4px;
+    white-space: pre-line; /* Permette il wrapping del testo su \n */
+    z-index: 10;
+    max-width: 300px; /* Limita la larghezza del tooltip */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    line-height: 1.4; /* Migliora la leggibilità del testo */
+  }
 `;
 
 const Input = styled.input`
@@ -110,7 +147,10 @@ const InputSection = ({ section, handleInputChange }) => {
           {section.fields.map((field, index) => (
             <TableRow key={index}>
               <TableCell>
-                <Label>{field}</Label>
+                <Label>
+                  {field}
+                  <TooltipIcon data-tooltip={descriptions[section.name][field]} />
+                </Label>
               </TableCell>
               <TableCell>
                 <Input
