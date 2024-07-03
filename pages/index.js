@@ -3,10 +3,9 @@ import styled from 'styled-components';
 import InputSection from '../components/InputSection';
 import ScoreChart from '../components/ScoreChart';
 import SectionCharts from '../components/SectionCharts';
-import { Radar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, RadialLinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend } from 'chart.js';
 
-// Registra i componenti necessari
+// Registra i componenti necessari per Chart.js
 ChartJS.register(CategoryScale, LinearScale, RadialLinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend);
 
 const sections = [
@@ -73,26 +72,70 @@ const sections = [
 ];
 
 const Container = styled.div`
-  padding: 2rem;
+  padding: 0.5rem 2rem 2rem;
   background-color: #001f3f;
   color: #fff;
   min-height: 100vh;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Roboto', sans-serif;
 `;
 
 const StyledTitle = styled.h1`
   text-align: center;
   color: #ff851b;
   margin-bottom: 2rem;
+  margin-top: 0;
+  font-size: 4rem;
 `;
 
 const Introduction = styled.div`
   margin-bottom: 2rem;
-  padding: 1rem;
+`;
+
+const Dropdown = styled.div`
   background-color: #002b5c;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+  cursor: pointer;
+`;
+
+const DropdownHeader = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const QuestionText = styled.span`
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ff851b;
+`;
+
+const DropdownContent = styled.div`
+  margin-top: 1rem;
+  max-height: ${({ $show }) => ($show ? '500px' : '0')};
+  overflow: hidden;
+  transition: max-height 0.5s ease, opacity 0.5s ease;
+  opacity: ${({ $show }) => ($show ? '1' : '0')};
+  visibility: ${({ $show }) => ($show ? 'visible' : 'hidden')};
+  background-color: #003366;
+  padding: ${({ $show }) => ($show ? '1rem' : '0')};
+  border-radius: 8px;
+  cursor: default;
+`;
+
+const Arrow = styled.span`
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  margin-right: 1rem;
+  transform: ${({ $show }) => ($show ? 'rotate(45deg)' : 'rotate(-45deg)')};
+  transition: transform 0.3s ease;
 `;
 
 const SectionContainer = styled.div`
@@ -123,6 +166,9 @@ const Home = () => {
   const [weightedScores, setWeightedScores] = useState({});
   const [sectionScores, setSectionScores] = useState({});
   const [maxScores, setMaxScores] = useState({});
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [showDropdown2, setShowDropdown2] = useState(false);
+  const [showDropdown3, setShowDropdown3] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -138,40 +184,88 @@ const Home = () => {
     const newWeightedScores = {};
     const newSectionScores = {};
     const newMaxScores = {};
+    
     sections.forEach((section) => {
       let total = 0;
       let weightedTotal = 0;
       let maxTotal = 0;
+      
       newSectionScores[section.name] = section.fields.map((field) => {
         const score = parseInt(updatedValues[`${section.name}-${field}`]) || 0;
         const weight = parseInt(updatedValues[`${section.name}-${field}-weight`]) || 0;
+        
         total += score;
         weightedTotal += score + weight;
-        maxTotal += 4; // Assuming max score per field is 4
+        
+        maxTotal += 4;
         return {
           name: field,
           score: score,
           weight: weight,
         };
       });
+      
       newScores[section.name] = total;
       newWeightedScores[section.name] = weightedTotal;
-      newMaxScores[section.name] = section.fields.length * 5; // Max score per field is 5 for radar charts
+      newMaxScores[section.name] = section.fields.length * 5;
     });
+    
     setScores(newScores);
     setWeightedScores(newWeightedScores);
     setSectionScores(newSectionScores);
     setMaxScores(newMaxScores);
   };
 
+  const handleToggle = (dropdown, setDropdown) => {
+    setDropdown(!dropdown);
+  };
+
   return (
     <Container>
-      <StyledTitle>Scamometer</StyledTitle>
+      <StyledTitle>Scam O'Meter</StyledTitle>
       <Introduction>
-        <h2>Cos'è lo Scamometer</h2>
-        <p>
-          Lo Scamometer è uno strumento di valutazione progettato per aiutarti a valutare la bontà di un progetto attraverso diverse metriche chiave. Inserisci i punteggi e le ponderazioni per ciascuna metrica nelle sezioni sottostanti. I grafici mostreranno una panoramica visiva dei punteggi assegnati.
-        </p>
+        <Dropdown onClick={() => handleToggle(showDropdown, setShowDropdown)}>
+          <DropdownHeader>
+            <Arrow $show={showDropdown} />
+            <QuestionText>Cos'è lo Scam O'Meter?</QuestionText>
+          </DropdownHeader>
+          <DropdownContent $show={showDropdown} onClick={(e) => e.stopPropagation()}>
+            <p>
+              <strong>Scam O'Meter</strong> è lo strumento integrato nella nostra web app progettato per valutare la credibilità di siti web, annunci e offerte online. Fornisce una valutazione obiettiva del potenziale rischio di truffe e inganni, aiutando gli utenti a prendere decisioni informate sulla sicurezza delle proprie interazioni digitali.
+            </p>
+            <p>
+              Scam O'Meter identifica segnali di allarme e fornisce indicazioni utili per migliorare la consapevolezza e proteggere la privacy degli utenti durante la navigazione online.
+            </p>
+          </DropdownContent>
+        </Dropdown>
+        <Dropdown onClick={() => handleToggle(showDropdown2, setShowDropdown2)}>
+          <DropdownHeader>
+            <Arrow $show={showDropdown2} />
+            <QuestionText>Come funziona lo Scam O'Meter?</QuestionText>
+          </DropdownHeader>
+          <DropdownContent $show={showDropdown2} onClick={(e) => e.stopPropagation()}>
+            <p>
+              Lo <strong>Scam O'Meter</strong> analizza vari parametri del sito web, degli annunci e delle offerte online per determinare la loro credibilità.
+            </p>
+            <p>
+              Utilizza algoritmi avanzati per identificare potenziali segnali di truffa e fornisce un punteggio basato su diversi criteri di valutazione, inclusi modelli di business, usabilità del sito web, documentazione e altro.
+            </p>
+          </DropdownContent>
+        </Dropdown>
+        <Dropdown onClick={() => handleToggle(showDropdown3, setShowDropdown3)}>
+          <DropdownHeader>
+            <Arrow $show={showDropdown3} />
+            <QuestionText>Come dare i punteggi e utilizzare il Valore di Ponderazione?</QuestionText>
+          </DropdownHeader>
+          <DropdownContent $show={showDropdown3} onClick={(e) => e.stopPropagation()}>
+            <p>
+              Per assegnare i punteggi, valuta ciascun criterio utilizzando una scala da 1 a 4, dove 1 rappresenta il punteggio più basso (scarso) e 4 il punteggio più alto (eccellente). La <strong>ponderazione</strong> è un parametro aggiuntivo che può essere impostato a -1, 0 o +1 per indicare rispettivamente un impatto negativo, neutro o positivo sulla valutazione complessiva.
+            </p>
+            <p>
+              Il vantaggio di avere un <strong>risultato ponderato</strong> rispetto a un risultato semplice risiede nella capacità di riflettere più accuratamente l'importanza relativa dei diversi criteri di valutazione.
+            </p>
+          </DropdownContent>
+        </Dropdown>
       </Introduction>
       {sections.map((section, index) => (
         <SectionContainer key={index}>

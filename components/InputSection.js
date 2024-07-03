@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import descriptions from '../data/descriptions.json'; // Assicurati che il percorso sia corretto
+import { TextField, Typography, ButtonGroup, Button, Tooltip } from '@mui/material';
+import { orange, deepOrange, amber } from '@mui/material/colors';
+import descriptions from '../data/descriptions.json'; // Importa le descrizioni
 
 const SectionContainer = styled.div`
   margin-bottom: 2rem;
@@ -38,107 +40,46 @@ const TableCell = styled.td`
   text-align: center;
 `;
 
-const Label = styled.label`
-  display: flex;
-  align-items: center;
-  color: #ff851b;
-  margin-bottom: 0.5rem;
-  text-align: left;
-`;
-
-const TooltipIcon = styled.span`
-  margin-left: 0.5rem;
-  cursor: pointer;
-  position: relative;
-  
-  &::before {
-    content: '?';
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
+const CustomTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))`
+  & .MuiTooltip-tooltip {
     background-color: #ff851b;
     color: #001f3f;
-    text-align: center;
-    line-height: 16px;
-    font-size: 12px;
+    font-size: 1rem;
+    border: 1px solid #ff851b;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
-  
-  &:hover::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    top: -25px;
-    left: 20px;
-    background-color: #ff851b;
-    color: #001f3f;
-    padding: 5px;
-    border-radius: 4px;
-    white-space: pre; /* Permette il wrapping del testo su \n */
-    z-index: 10;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    line-height: 1.4; /* Migliora la leggibilità del testo */
-  }
-`;
-
-const Input = styled.input`
-  width: 80px;
-  padding: 0.5rem;
-  border: 1px solid #ff851b;
-  border-radius: 4px;
-  background-color: #001f3f;
-  color: #fff;
-  transition: background-color 0.3s, box-shadow 0.3s;
-
-  &:hover,
-  &:focus {
-    background-color: #002b5c;
-    box-shadow: 0 0 8px rgba(255, 133, 27, 0.8);
-  }
-`;
-
-const Select = styled.select`
-  width: 80px;
-  padding: 0.5rem;
-  border: 1px solid #ff851b;
-  border-radius: 4px;
-  background-color: #001f3f;
-  color: #fff;
-  transition: background-color 0.3s, box-shadow 0.3s;
-
-  &:hover,
-  &:focus {
-    background-color: #002b5c;
-    box-shadow: 0 0 8px rgba(255, 133, 27, 0.8);
-  }
-`;
-
-const Textarea = styled.textarea`
-  width: 150px;
-  height: 60px;
-  padding: 0.5rem;
-  border: 1px solid #ff851b;
-  border-radius: 4px;
-  background-color: #001f3f;
-  color: #fff;
-  transition: background-color 0.3s, box-shadow 0.3s;
-
-  &:hover,
-  &:focus {
-    background-color: #002b5c;
-    box-shadow: 0 0 8px rgba(255, 133, 27, 0.8);
+  & .MuiTooltip-arrow {
+    color: #ff851b;
   }
 `;
 
 const InputSection = ({ section, handleInputChange }) => {
+  const [selectedScores, setSelectedScores] = useState({});
+  const [selectedWeights, setSelectedWeights] = useState({});
+
+  const handleScoreClick = (name, value) => {
+    setSelectedScores((prev) => ({ ...prev, [name]: prev[name] === value ? null : value }));
+    handleInputChange({ target: { name, value: selectedScores[name] === value ? '' : value } });
+  };
+
+  const handleWeightClick = (name, value) => {
+    setSelectedWeights((prev) => ({ ...prev, [name]: prev[name] === value ? null : value }));
+    handleInputChange({ target: { name, value: selectedWeights[name] === value ? '' : value } });
+  };
+
   return (
     <SectionContainer>
-      <h2>{section.name}</h2>
+      <Typography variant="h4" component="h2" sx={{ color: '#ff851b' }}>{section.name}</Typography>
       <Table>
         <thead>
           <tr>
-            <TableHeader>Criteri di valutazione</TableHeader>
-            <TableHeader>Punteggio semplice</TableHeader>
-            <TableHeader>Ponderazione</TableHeader>
+            <TableHeader>Criteri di Valutazione</TableHeader>
+            <TableHeader>Punteggio Semplice</TableHeader>
+            <TableHeader>Valore di Ponderazione</TableHeader>
             <TableHeader>Commenti</TableHeader>
           </tr>
         </thead>
@@ -146,32 +87,75 @@ const InputSection = ({ section, handleInputChange }) => {
           {section.fields.map((field, index) => (
             <TableRow key={index}>
               <TableCell>
-                <Label>
-                  {field}
-                  <TooltipIcon data-tooltip={descriptions[section.name][field]} />
-                </Label>
+                <CustomTooltip title={descriptions[section.name][field]} arrow enterDelay={0} leaveDelay={0}>
+                  <Typography variant="body1" sx={{ color: '#fff', cursor: 'pointer', display: 'inline-block' }}>{field}</Typography>
+                </CustomTooltip>
               </TableCell>
               <TableCell>
-                <Input
-                  type="number"
-                  name={`${section.name}-${field}`}
-                  onChange={handleInputChange}
-                  min="1"
-                  max="4"
-                />
+                <ButtonGroup variant="contained">
+                  {[1, 2, 3, 4].map((value) => (
+                    <Button
+                      key={value}
+                      onClick={() => handleScoreClick(`${section.name}-${field}`, value)}
+                      sx={{
+                        backgroundColor: selectedScores[`${section.name}-${field}`] === value ? deepOrange[900] : orange[500],
+                        color: '#fff',
+                        transition: 'background-color 0.3s ease',
+                        '&:hover': {
+                          backgroundColor: deepOrange[700],
+                        },
+                      }}
+                    >
+                      {value}
+                    </Button>
+                  ))}
+                </ButtonGroup>
               </TableCell>
               <TableCell>
-                <Select name={`${section.name}-${field}-weight`} onChange={handleInputChange} defaultValue="0">
-                  <option value="1">+1</option>
-                  <option value="0">0</option>
-                  <option value="-1">-1</option>
-                </Select>
+                <ButtonGroup variant="contained">
+                  {[-1, 0, 1].map((value) => (
+                    <Button
+                      key={value}
+                      onClick={() => handleWeightClick(`${section.name}-${field}-weight`, value)}
+                      sx={{
+                        backgroundColor: selectedWeights[`${section.name}-${field}-weight`] === value ? deepOrange[900] : orange[500],
+                        color: '#fff',
+                        transition: 'background-color 0.3s ease',
+                        '&:hover': {
+                          backgroundColor: deepOrange[700],
+                        },
+                      }}
+                    >
+                      {value}
+                    </Button>
+                  ))}
+                </ButtonGroup>
               </TableCell>
               <TableCell>
-                <Textarea
+                <TextField
                   name={`${section.name}-${field}-comment`}
                   onChange={handleInputChange}
-                ></Textarea>
+                  multiline
+                  rows={2}
+                  variant="outlined"
+                  color="warning"
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: orange[500],
+                      },
+                      '&:hover fieldset': {
+                        borderColor: deepOrange[700],
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: deepOrange[900],
+                      },
+                      '& textarea': {
+                        color: '#fff',
+                      },
+                    },
+                  }}
+                />
               </TableCell>
             </TableRow>
           ))}
