@@ -22,8 +22,8 @@ const GlobalStyle = createGlobalStyle`
     color: #fff;
   }
 
-  label {
-    color: #ff851b;
+  label, p, span {
+    color: #fff;
   }
 `;
 
