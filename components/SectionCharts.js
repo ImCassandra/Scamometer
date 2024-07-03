@@ -171,10 +171,13 @@ const SectionCharts = ({ sectionScores }) => {
             minValue={0}
             maxValue={100}
             segments={4}
-            needleColor="#ff851b"
+            needleColor="#fff"
+            needleTransition="easeQuadIn"
+            needleHeightRatio={0.7}
+            ringWidth={40}
+            textColor="#fff"
             startColor="#ff0000"
             endColor="#00ff00"
-            textColor="#fff"
           />
           <SpeedometerLabel>
             <div>Rischio Alto</div>
