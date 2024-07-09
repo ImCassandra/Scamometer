@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import InputSection from '../components/InputSection';
-import ScoreChart from '../components/ScoreChart';
 import SectionCharts from '../components/SectionCharts';
+import ProjectInput from '../components/ProjectInput';
 import { Chart as ChartJS, CategoryScale, LinearScale, RadialLinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend } from 'chart.js';
 
-// Registra i componenti necessari per Chart.js
 ChartJS.register(CategoryScale, LinearScale, RadialLinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend);
 
 const sections = [
@@ -155,11 +154,6 @@ const SectionChartsContainer = styled.div`
   justify-content: center;
 `;
 
-const ChartWrapper = styled.div`
-  width: 100%;
-  margin-bottom: 2rem;
-`;
-
 const Home = () => {
   const [inputValues, setInputValues] = useState({});
   const [scores, setScores] = useState({});
@@ -169,6 +163,7 @@ const Home = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showDropdown2, setShowDropdown2] = useState(false);
   const [showDropdown3, setShowDropdown3] = useState(false);
+  const [projectData, setProjectData] = useState({});
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -177,6 +172,10 @@ const Home = () => {
       [name]: value,
     });
     calculateScores({ ...inputValues, [name]: value });
+  };
+
+  const handleProjectDataChange = (data) => {
+    setProjectData(data);
   };
 
   const calculateScores = (updatedValues) => {
@@ -267,6 +266,7 @@ const Home = () => {
           </DropdownContent>
         </Dropdown>
       </Introduction>
+      <ProjectInput onProjectDataChange={handleProjectDataChange} />
       {sections.map((section, index) => (
         <SectionContainer key={index}>
           <SectionContent>
@@ -277,10 +277,6 @@ const Home = () => {
           </SectionChartsContainer>
         </SectionContainer>
       ))}
-      <ChartWrapper>
-        <h2>Punteggi Totali</h2>
-        <ScoreChart scores={scores} weightedScores={weightedScores} maxScores={maxScores} />
-      </ChartWrapper>
     </Container>
   );
 };
