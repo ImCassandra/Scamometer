@@ -26,6 +26,23 @@ const ProjectInput = ({ onProjectDataChange }) => {
     onProjectDataChange({ ...projectData, [name]: value });
   };
 
+  const validateDate = (dateString) => {
+    // Regular expression to match date in yyyy-mm-dd format
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!regex.test(dateString)) {
+      // Return false if date format is incorrect
+      return false;
+    }
+
+    // Further date validation if needed (e.g., check if it's a valid calendar date)
+    const dateObject = new Date(dateString);
+    if (isNaN(dateObject.getTime())) {
+      return false;
+    }
+
+    return true;
+  };
+
   return (
     <ProjectInputContainer>
       <Typography variant="h4" component="h2" sx={{ color: '#ff851b', marginBottom: '1rem' }}>
@@ -37,6 +54,7 @@ const ProjectInput = ({ onProjectDataChange }) => {
         value={projectData.projectName}
         onChange={handleInputChange}
         fullWidth
+        autoComplete="off" // Disabilita suggerimenti di autocompletamento
         sx={{
           marginBottom: '1rem',
           '& .MuiInputLabel-root': { color: '#ff851b' },
@@ -57,6 +75,7 @@ const ProjectInput = ({ onProjectDataChange }) => {
         multiline
         minRows={2}
         maxRows={6}
+        autoComplete="off" // Disabilita suggerimenti di autocompletamento
         sx={{
           marginBottom: '1rem',
           '& .MuiInputLabel-root': { color: '#ff851b' },
@@ -73,11 +92,11 @@ const ProjectInput = ({ onProjectDataChange }) => {
           <TextField
             label="Data di Inizio"
             name="startDate"
-            type="date"
+            type="text" // Cambio da 'date' a 'text'
             value={projectData.startDate}
             onChange={handleInputChange}
             fullWidth
-            InputLabelProps={{ shrink: true }}
+            autoComplete="off" // Disabilita suggerimenti di autocompletamento
             sx={{
               marginBottom: '1rem',
               '& .MuiInputLabel-root': { color: '#ff851b' },
@@ -85,7 +104,7 @@ const ProjectInput = ({ onProjectDataChange }) => {
                 '& fieldset': { borderColor: orange[500] },
                 '&:hover fieldset': { borderColor: deepOrange[700] },
                 '&.Mui-focused fieldset': { borderColor: deepOrange[900] },
-                '& input[type="date"]': { color: orange[500] },
+                '& input': { color: orange[500] },
               },
             }}
           />
@@ -94,11 +113,11 @@ const ProjectInput = ({ onProjectDataChange }) => {
           <TextField
             label="Data di Fine"
             name="endDate"
-            type="date"
+            type="text" // Cambio da 'date' a 'text'
             value={projectData.endDate}
             onChange={handleInputChange}
             fullWidth
-            InputLabelProps={{ shrink: true }}
+            autoComplete="off" // Disabilita suggerimenti di autocompletamento
             sx={{
               marginBottom: '1rem',
               '& .MuiInputLabel-root': { color: '#ff851b' },
@@ -106,7 +125,7 @@ const ProjectInput = ({ onProjectDataChange }) => {
                 '& fieldset': { borderColor: orange[500] },
                 '&:hover fieldset': { borderColor: deepOrange[700] },
                 '&.Mui-focused fieldset': { borderColor: deepOrange[900] },
-                '& input[type="date"]': { color: orange[500] },
+                '& input': { color: orange[500] },
               },
             }}
           />
@@ -118,6 +137,7 @@ const ProjectInput = ({ onProjectDataChange }) => {
             value={projectData.analystName}
             onChange={handleInputChange}
             fullWidth
+            autoComplete="off" // Disabilita suggerimenti di autocompletamento
             sx={{
               marginBottom: '1rem',
               '& .MuiInputLabel-root': { color: '#ff851b' },
