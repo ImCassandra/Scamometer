@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { TextField, Typography, Grid } from '@mui/material';
+import { TextField, Typography, Grid, Divider } from '@mui/material';
 import { orange, deepOrange } from '@mui/material/colors';
 
 const ProjectInputContainer = styled.div`
@@ -54,7 +54,7 @@ const ProjectInput = ({ onProjectDataChange }) => {
         value={projectData.projectName}
         onChange={handleInputChange}
         fullWidth
-        autoComplete="off" // Disabilita suggerimenti di autocompletamento
+        autoComplete="off"
         sx={{
           marginBottom: '1rem',
           '& .MuiInputLabel-root': { color: '#ff851b' },
@@ -75,7 +75,7 @@ const ProjectInput = ({ onProjectDataChange }) => {
         multiline
         minRows={2}
         maxRows={6}
-        autoComplete="off" // Disabilita suggerimenti di autocompletamento
+        autoComplete="off"
         sx={{
           marginBottom: '1rem',
           '& .MuiInputLabel-root': { color: '#ff851b' },
@@ -92,11 +92,11 @@ const ProjectInput = ({ onProjectDataChange }) => {
           <TextField
             label="Data di Inizio"
             name="startDate"
-            type="text" // Cambio da 'date' a 'text'
+            type="text"
             value={projectData.startDate}
             onChange={handleInputChange}
             fullWidth
-            autoComplete="off" // Disabilita suggerimenti di autocompletamento
+            autoComplete="off"
             sx={{
               marginBottom: '1rem',
               '& .MuiInputLabel-root': { color: '#ff851b' },
@@ -113,11 +113,11 @@ const ProjectInput = ({ onProjectDataChange }) => {
           <TextField
             label="Data di Fine"
             name="endDate"
-            type="text" // Cambio da 'date' a 'text'
+            type="text"
             value={projectData.endDate}
             onChange={handleInputChange}
             fullWidth
-            autoComplete="off" // Disabilita suggerimenti di autocompletamento
+            autoComplete="off"
             sx={{
               marginBottom: '1rem',
               '& .MuiInputLabel-root': { color: '#ff851b' },
@@ -137,7 +137,7 @@ const ProjectInput = ({ onProjectDataChange }) => {
             value={projectData.analystName}
             onChange={handleInputChange}
             fullWidth
-            autoComplete="off" // Disabilita suggerimenti di autocompletamento
+            autoComplete="off"
             sx={{
               marginBottom: '1rem',
               '& .MuiInputLabel-root': { color: '#ff851b' },
@@ -151,6 +151,9 @@ const ProjectInput = ({ onProjectDataChange }) => {
           />
         </Grid>
       </Grid>
+      {/* Linea orizzontale dopo la sezione delle informazioni sul progetto */}
+      <Divider sx={{ margin: '1rem 0', backgroundColor: '#ff851b', height: '4px' }} />
+      {/* Fine linea orizzontale */}
     </ProjectInputContainer>
   );
 };
