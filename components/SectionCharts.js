@@ -36,22 +36,24 @@ const BarChartContainer = styled.div`
 
 const SpeedometerContainer = styled.div`
   width: 100%;
-  height: 300px;
+  height: 230px; /* Incrementa leggermente l'altezza del contenitore */
   margin-top: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
+  overflow: hidden; /* Aggiungi overflow nascosto per evitare tagli laterali */
 `;
 
 const SpeedometerLabel = styled.div`
   position: absolute;
-  top: 85%;
+  top: 94%; /* Posiziona le etichette più vicine al grafico */
   width: 100%;
   display: flex;
   justify-content: space-between;
   color: #fff;
   padding: 0 10px;
+  transform: translateY(-50%);
 `;
 
 const SectionCharts = ({ sectionScores }) => {
@@ -178,6 +180,7 @@ const SectionCharts = ({ sectionScores }) => {
             textColor="#fff"
             startColor="#ff0000"
             endColor="#00ff00"
+            height={160}  // Incrementa leggermente l'altezza del tachimetro
           />
           <SpeedometerLabel>
             <div>Rischio Alto</div>
