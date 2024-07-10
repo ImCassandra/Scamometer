@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { TextField, Typography, MenuItem, Grid, Select, FormControl, InputLabel, OutlinedInput, Button, IconButton } from '@mui/material';
+import { TextField, Typography, Grid, Button, IconButton } from '@mui/material';
 import { orange, deepOrange } from '@mui/material/colors';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -72,18 +72,6 @@ const LightboxImage = styled.img`
   border-radius: 4px;
 `;
 
-const virusCategories = [
-  { label: 'Trojan', value: 'trojan' },
-  { label: 'Malware', value: 'malware' },
-  { label: 'Worm', value: 'worm' },
-  { label: 'Spyware', value: 'spyware' },
-  { label: 'Adware', value: 'adware' },
-  { label: 'Ransomware', value: 'ransomware' },
-  { label: 'Rootkit', value: 'rootkit' },
-  { label: 'Keylogger', value: 'keylogger' },
-  { label: 'Altro...', value: 'other' }, // Opzione per inserire un virus personalizzato
-];
-
 const VirusTotalInput = ({ onVirusTotalDataChange }) => {
   const [virusTotalData, setVirusTotalData] = useState({
     scanId: '',
@@ -137,7 +125,7 @@ const VirusTotalInput = ({ onVirusTotalDataChange }) => {
     <>
       <VirusTotalInputContainer>
         <Typography variant="h4" component="h2" sx={{ color: '#ff851b', marginBottom: '1rem' }}>
-          Inserisci i dati di VirusTotal
+          Analisi delle Vulnerabilità (VirusTotal) 
         </Typography>
         <TextField
           label="Scan ID"
@@ -175,68 +163,33 @@ const VirusTotalInput = ({ onVirusTotalDataChange }) => {
             },
           }}
         />
-        <TextField
-          label="Data di Scansione"
-          name="scanDate"
-          value={virusTotalData.scanDate}
-          onChange={handleInputChange}
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          inputProps={{ autoComplete: 'off', pattern: '\\d{4}-\\d{2}-\\d{2}' }} // Formato data YYYY-MM-DD
-          sx={{
-            marginBottom: '1rem',
-            '& .MuiInputLabel-root': { color: '#ff851b' },
-            '& .MuiOutlinedInput-root': {
-              '& fieldset': { borderColor: orange[500] },
-              '&:hover fieldset': { borderColor: deepOrange[700] },
-              '&.Mui-focused fieldset': { borderColor: deepOrange[900] },
-              '& input': { color: orange[500] }, // Modifica il colore del testo inserito
-            },
-          }}
-        />
         <Grid container spacing={2}>
-          <Grid item xs={4}>
-            <FormControl fullWidth>
-              <InputLabel sx={{ color: '#ff851b' }}>Positivi</InputLabel>
-              <Select
-                label="Positivi"
-                name="positives"
-                value={virusTotalData.positives}
-                onChange={handleInputChange}
-                input={<OutlinedInput label="Positivi" />}
-                MenuProps={{
-                  PaperProps: {
-                    style: {
-                      maxHeight: 200, // Altezza massima del menu
-                      backgroundColor: '#003366', // Colore di sfondo coerente con il tool
-                      color: '#fff', // Colore del testo
-                      width: '250px', // Larghezza del menu ridotta
-                    },
-                  },
-                }}
-                sx={{
-                  marginBottom: '1rem',
-                  '& .MuiOutlinedInput-notchedOutline': { borderColor: orange[500] },
-                  '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: deepOrange[700] },
-                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: deepOrange[900] },
-                  '& .MuiInputBase-root': { color: orange[500] }, // Modifica il colore del testo inserito
-                  '& .MuiSelect-icon': { color: orange[500] }, // Modifica il colore dell'icona del menu
-                  '& .MuiMenuItem-root': { color: orange[500] }, // Modifica il colore del testo nelle opzioni
-                }}
-              >
-                {virusCategories.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={6}>
             <TextField
-              label="Nome del Virus"
-              name="virusName"
-              value={virusTotalData.virusName}
+              label="Data di Scansione"
+              name="scanDate"
+              value={virusTotalData.scanDate}
+              onChange={handleInputChange}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              inputProps={{ autoComplete: 'off', pattern: '\\d{4}-\\d{2}-\\d{2}' }} // Formato data YYYY-MM-DD
+              sx={{
+                marginBottom: '1rem',
+                '& .MuiInputLabel-root': { color: '#ff851b' },
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': { borderColor: orange[500] },
+                  '&:hover fieldset': { borderColor: deepOrange[700] },
+                  '&.Mui-focused fieldset': { borderColor: deepOrange[900] },
+                  '& input': { color: orange[500] }, // Modifica il colore del testo inserito
+                },
+              }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              label="Numero di Positivi"
+              name="positives"
+              value={virusTotalData.positives}
               onChange={handleInputChange}
               fullWidth
               inputProps={{ autoComplete: 'off' }}
@@ -252,13 +205,41 @@ const VirusTotalInput = ({ onVirusTotalDataChange }) => {
               }}
             />
           </Grid>
-          <Grid item xs={4}>
+        </Grid>
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
             <TextField
-              label="Specifiche del Virus"
+              label="Nome dei Virus"
+              name="virusName"
+              value={virusTotalData.virusName}
+              onChange={handleInputChange}
+              fullWidth
+              multiline
+              minRows={1}
+              maxRows={4}
+              inputProps={{ autoComplete: 'off' }}
+              sx={{
+                marginBottom: '1rem',
+                '& .MuiInputLabel-root': { color: '#ff851b' },
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': { borderColor: orange[500] },
+                  '&:hover fieldset': { borderColor: deepOrange[700] },
+                  '&.Mui-focused fieldset': { borderColor: deepOrange[900] },
+                  '& input': { color: orange[500] }, // Modifica il colore del testo inserito
+                },
+              }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              label="Specifiche dei Virus"
               name="virusDetails"
               value={virusTotalData.virusDetails}
               onChange={handleInputChange}
               fullWidth
+              multiline
+              minRows={1}
+              maxRows={4}
               inputProps={{ autoComplete: 'off' }}
               sx={{
                 marginBottom: '1rem',
