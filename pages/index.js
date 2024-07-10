@@ -1,9 +1,11 @@
+// pages/index.js
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import InputSection from '../components/InputSection';
 import SectionCharts from '../components/SectionCharts';
 import ProjectInput from '../components/ProjectInput';
-import VirusTotalInput from '../components/VirusTotalInput'; // Importa il nuovo componente
+import VirusTotalInput from '../components/VirusTotalInput';
+import ChatGpt from '../components/ChatGpt';
 import { Chart as ChartJS, CategoryScale, LinearScale, RadialLinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend } from 'chart.js';
 
 ChartJS.register(CategoryScale, LinearScale, RadialLinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend);
@@ -155,6 +157,10 @@ const SectionChartsContainer = styled.div`
   justify-content: center;
 `;
 
+const VirusTotalContainer = styled.div`
+  margin-bottom: 2rem; /* Aggiungi margine inferiore per separare il componente ChatGPT */
+`;
+
 const Home = () => {
   const [inputValues, setInputValues] = useState({});
   const [scores, setScores] = useState({});
@@ -283,7 +289,10 @@ const Home = () => {
           </SectionChartsContainer>
         </SectionContainer>
       ))}
-      <VirusTotalInput onVirusTotalDataChange={handleVirusTotalDataChange} /> {/* Aggiungi il nuovo componente qui */}
+      <VirusTotalContainer>
+        <VirusTotalInput onVirusTotalDataChange={handleVirusTotalDataChange} />
+      </VirusTotalContainer>
+      <ChatGpt />
     </Container>
   );
 };

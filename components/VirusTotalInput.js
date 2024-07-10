@@ -97,7 +97,7 @@ const VirusTotalInput = ({ onVirusTotalDataChange }) => {
     const newScreenshots = [...virusTotalData.screenshots];
     newScreenshots[index] = {
       file,
-      preview: URL.createObjectURL(file),
+      preview: file ? URL.createObjectURL(file) : null,
     };
     setVirusTotalData({ ...virusTotalData, screenshots: newScreenshots });
     onVirusTotalDataChange({ ...virusTotalData, screenshots: newScreenshots });
@@ -287,7 +287,7 @@ const VirusTotalInput = ({ onVirusTotalDataChange }) => {
                 style={{ color: '#ff851b', marginBottom: '1rem' }}
                 autoComplete="off"
               />
-              {screenshot.preview && (
+              {screenshot.preview ? (
                 <>
                   <ScreenshotPreview
                     src={screenshot.preview}
@@ -298,6 +298,10 @@ const VirusTotalInput = ({ onVirusTotalDataChange }) => {
                     <CloseIcon fontSize="small" />
                   </DeleteButton>
                 </>
+              ) : (
+                <DeleteButton size="small" onClick={() => removeScreenshotBox(index)}>
+                  <CloseIcon fontSize="small" />
+                </DeleteButton>
               )}
             </ScreenshotContainer>
           ))}
