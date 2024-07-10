@@ -226,6 +226,7 @@ const VirusTotalInput = ({ onVirusTotalDataChange }) => {
                   '&:hover fieldset': { borderColor: deepOrange[700] },
                   '&.Mui-focused fieldset': { borderColor: deepOrange[900] },
                   '& input': { color: orange[500] }, // Modifica il colore del testo inserito
+                  '& textarea': { color: orange[500] }, // Modifica il colore del testo inserito nel multiline
                 },
               }}
             />
@@ -249,6 +250,7 @@ const VirusTotalInput = ({ onVirusTotalDataChange }) => {
                   '&:hover fieldset': { borderColor: deepOrange[700] },
                   '&.Mui-focused fieldset': { borderColor: deepOrange[900] },
                   '& input': { color: orange[500] }, // Modifica il colore del testo inserito
+                  '& textarea': { color: orange[500] }, // Modifica il colore del testo inserito nel multiline
                 },
               }}
             />
