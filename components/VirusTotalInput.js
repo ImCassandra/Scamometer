@@ -125,7 +125,7 @@ const VirusTotalInput = ({ onVirusTotalDataChange }) => {
     <>
       <VirusTotalInputContainer>
         <Typography variant="h4" component="h2" sx={{ color: '#ff851b', marginBottom: '1rem' }}>
-          Analisi delle Vulnerabilità (VirusTotal) 
+          Analisi delle Vulnerabilità
         </Typography>
         <TextField
           label="Scan ID"
