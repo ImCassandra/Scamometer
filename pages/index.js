@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import InputSection from '../components/InputSection';
 import SectionCharts from '../components/SectionCharts';
 import ProjectInput from '../components/ProjectInput';
+import VirusTotalInput from '../components/VirusTotalInput'; // Importa il nuovo componente
 import { Chart as ChartJS, CategoryScale, LinearScale, RadialLinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend } from 'chart.js';
 
 ChartJS.register(CategoryScale, LinearScale, RadialLinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend);
@@ -164,6 +165,7 @@ const Home = () => {
   const [showDropdown2, setShowDropdown2] = useState(false);
   const [showDropdown3, setShowDropdown3] = useState(false);
   const [projectData, setProjectData] = useState({});
+  const [virusTotalData, setVirusTotalData] = useState({});
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -176,6 +178,10 @@ const Home = () => {
 
   const handleProjectDataChange = (data) => {
     setProjectData(data);
+  };
+
+  const handleVirusTotalDataChange = (data) => {
+    setVirusTotalData(data);
   };
 
   const calculateScores = (updatedValues) => {
@@ -277,6 +283,7 @@ const Home = () => {
           </SectionChartsContainer>
         </SectionContainer>
       ))}
+      <VirusTotalInput onVirusTotalDataChange={handleVirusTotalDataChange} /> {/* Aggiungi il nuovo componente qui */}
     </Container>
   );
 };
